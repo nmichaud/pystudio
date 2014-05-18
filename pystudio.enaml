@@ -1,0 +1,367 @@
+
+
+# XXX Inject new icons for dock title
+from enaml.qt.docking import xbms
+xbms.MAXIMIZE_BUTTON = xbms.XBM(14, 14, [
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+])
+
+xbms.RESTORE_BUTTON = xbms.XBM(14, 14, [
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+    0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+])
+
+
+import os
+
+from enaml.widgets.api import (
+    MainWindow, MenuBar, Menu, ToolBar, ToolButton, Action, ActionGroup,
+    DockArea, DockItem, Container, MultilineField, Html, Field
+)
+
+from enaml.layout.api import vbox, HSplitLayout, VSplitLayout, TabLayout
+
+from enaml.styling import StyleSheet, Style, Setter
+
+from enaml.icon import Icon, IconImage
+from enaml.image import Image
+
+from enaml.widgets.ipython_console import IPythonConsole
+
+from stylesheet import PyStudioStyleSheet
+
+
+def load_icon(name):
+    dirname = os.path.dirname(__file__)
+    fname = os.path.join(dirname, 'icons', '%s.png' % name)
+    with open(fname, 'rb') as f:
+        data = f.read()
+    img = Image(data=data)
+    icg = IconImage(image=img)
+    return Icon(images=[icg])
+
+
+STOCK_NEW_ICON = load_icon('stock_new')
+SAVE_ICON = load_icon('save')
+SAVE_ALL_ICON = load_icon('save_all')
+PRINT_ICON = load_icon('print')
+PYTHON_FILE_ICON = load_icon('icon_python')
+TEXT_FILE_ICON = load_icon('icon_text')
+OPEN_FOLDER_ICON = load_icon('open_folder')
+SAVE_ICON = load_icon('save')
+RUN_ICON = load_icon('run')
+DEBUG_STEP_ICON = load_icon('debug_step')
+DEBUG_STEP_INTO_ICON = load_icon('debug_step_into')
+RETURN_ICON = load_icon('debug_finish')
+DEBUG_STOP_ICON = load_icon('debug_stop')
+NEW_FOLDER_ICON = load_icon('new_folder')
+DELETE_ICON = load_icon('delete')
+RENAME_FILE_ICON = load_icon('rename_file')
+MORE_ACTIONS_ICON = load_icon('more_actions')
+INSTALL_PACKAGE_ICON = load_icon('install_package')
+UPDATE_PACKAGES = load_icon('update_packages')
+
+
+enamldef MainMenuBar(MenuBar):
+    Menu:
+        title = '&File'
+        Action:
+            text = 'New File\tCtrl+N'
+            triggered :: print 'New File triggered'
+        Action:
+            text = 'Open File\tCtrl+O'
+            triggered :: print 'Open File triggered'
+        Action:
+            text = 'Open Folder...'
+            triggered :: print 'Open Folder triggered'
+    Menu:
+        title = '&Edit'
+        Action:
+            text = 'Undo\tCtrl+Z'
+            triggered :: print 'Undo triggered'
+        Action:
+            text = 'Redo\tCtrl+R'
+            triggered :: print 'Redo triggered'
+        Menu:
+            title = 'Undo Selection'
+            Action:
+                text = 'Undo Insert\tCtrl+U'
+                triggered :: print 'Undo Insert triggered'
+            Action:
+                text = 'Redo Insert\tCtrl+Shift+U'
+                enabled = False
+                triggered :: print 'Redo Insert triggered'
+        Action:
+            separator = True
+        Action:
+            text = 'Cut\tCtrl+X'
+            triggered :: print "Cut triggered"
+        Action:
+            text = 'Copy\tCtrl+C'
+            triggered :: print 'Copy triggered'
+        Action:
+            text = 'Paste\tCtrl+V'
+            triggered :: print 'Paste triggered'
+    Menu:
+        title = '&View'
+        ActionGroup:
+            Action:
+                checkable = True
+                text = 'Center'
+                toggled :: print '%s toggled %s' % (text, 'on' if checked else 'off')
+            Action:
+                checkable = True
+                text = 'Left'
+                toggled :: print '%s toggled %s' % (text, 'on' if checked else 'off')
+            Action:
+                checkable = True
+                text = 'Right'
+                toggled :: print '%s toggled %s' % (text, 'on' if checked else 'off')
+            Action:
+                checkable = True
+                text = 'Justify'
+                toggled :: print '%s toggled %s' % (text, 'on' if checked else 'off')
+
+
+enamldef EditorToolBar(ToolBar):
+    ToolButton:
+        text = 'Save'
+        tool_tip = text
+        icon = SAVE_ICON
+    Action:
+        separator = True
+    ToolButton:
+        text = 'Run'
+        tool_tip = text
+        icon = RUN_ICON
+    ToolButton:
+        text = 'Step'
+        tool_tip = text
+        icon = DEBUG_STEP_ICON
+    ToolButton:
+        text = 'Step Into'
+        tool_tip = text
+        icon = DEBUG_STEP_INTO_ICON
+    ToolButton:
+        text = 'Return'
+        tool_tip = text
+        icon = RETURN_ICON
+    ToolButton:
+        text = 'Stop'
+        tool_tip = text
+        icon = DEBUG_STOP_ICON
+
+
+enamldef FileToolBar(ToolBar):
+    ToolButton:
+        text = 'New Folder'
+        tool_tip = text
+        button_style = 'text_beside_icon'
+        icon = NEW_FOLDER_ICON
+    Action:
+        separator = True
+    ToolButton:
+        text = 'Delete'
+        tool_tip = text
+        button_style = 'text_beside_icon'
+        icon = DELETE_ICON
+    ToolButton:
+        text = 'Rename'
+        tool_tip = text
+        button_style = 'text_beside_icon'
+        icon = RENAME_FILE_ICON
+    Action:
+        separator = True
+    ToolButton:
+        text = 'More'
+        tool_tip = text
+        button_style = 'text_beside_icon'
+        icon = MORE_ACTIONS_ICON
+        popup_mode = 'instant'
+        Menu:
+            title = '&File'
+            Action:
+                text = 'New File\tCtrl+N'
+                triggered :: print 'New File triggered'
+            Action:
+                text = 'Open File\tCtrl+O'
+                triggered :: print 'Open File triggered'
+            Action:
+                text = 'Open Folder...'
+                triggered :: print 'Open Folder triggered'
+
+
+enamldef PackageToolBar(ToolBar):
+    ToolButton:
+        text = 'Install Package'
+        tool_tip = text
+        button_style = 'text_beside_icon'
+        icon = INSTALL_PACKAGE_ICON
+    Action:
+        separator = True
+    ToolButton:
+        text = 'Check for Updates'
+        tool_tip = text
+        button_style = 'text_beside_icon'
+        icon = UPDATE_PACKAGES
+
+
+enamldef HelpToolBar(ToolBar):
+    pass
+
+
+enamldef DockContainer(Container):
+    padding = 0
+
+
+template ToolBarContainer(ToolBar, Content):
+    DockContainer:
+        alias content
+        alias toolbar
+        constraints = [vbox(toolbar, 0, content)]
+        ToolBar: toolbar:
+            pass
+        Content: content:
+            pass
+
+
+enamldef MyArea(DockArea): area:
+    layout = HSplitLayout(
+        VSplitLayout(TabLayout('file1'), 'console'),
+        VSplitLayout(TabLayout('workspace', 'history'),
+            TabLayout('packages', 'files', 'help')),
+    )
+    DockItem:
+        name = 'file1'
+        title = 'Untitled1'
+        icon = PYTHON_FILE_ICON
+        ToolBarContainer(EditorToolBar, MultilineField):
+            pass
+    DockItem:
+        name = 'workspace'
+        title = 'Workspace'
+        closable = False
+        DockContainer:
+            MultilineField: pass
+    DockItem:
+        name = 'history'
+        title = 'History'
+        closable = False
+        DockContainer:
+            MultilineField: pass
+    DockItem:
+        name = 'console'
+        title = 'IPython Console'
+        closable = False
+        DockContainer:
+            IPythonConsole:
+                hug_width = 'weak'
+    DockItem:
+        name = 'help'
+        title = 'Help'
+        closable = False
+        ToolBarContainer(HelpToolBar, Html): tbc:
+            tbc.content.source = "<H1> Welcome to python </H1>"
+    DockItem:
+        name = 'files'
+        title = 'Files'
+        closable = False
+        ToolBarContainer(FileToolBar, MultilineField):
+            pass
+    DockItem:
+        name = 'packages'
+        title = 'Packages'
+        closable = False
+        ToolBarContainer(PackageToolBar, Container):
+            pass
+
+
+enamldef MainToolBar(ToolBar):
+    movable = False
+    floatable = False
+    ToolButton:
+        text = 'New File'
+        tool_tip = text
+        icon = STOCK_NEW_ICON
+        popup_mode = 'instant'
+        Menu:
+            Action:
+                text = 'Python File\tCtrl+N'
+                triggered :: print 'New File triggered'
+                icon = PYTHON_FILE_ICON
+            Action:
+                separator = True
+            Action:
+                text = 'Text File'
+                icon = TEXT_FILE_ICON
+
+    Action:
+        separator = True
+    ToolButton:
+        text = 'Open'
+        tool_tip = text
+        icon = OPEN_FOLDER_ICON
+    Action:
+        separator = True
+    ToolButton:
+        text = 'Save document'
+        tool_tip = text
+        icon = SAVE_ICON
+    ToolButton:
+        text = 'Save all open documents'
+        tool_tip = text
+        icon = SAVE_ALL_ICON
+    Action:
+        separator = True
+    ToolButton:
+        text = 'Print'
+        tool_tip = text
+        icon = PRINT_ICON
+    Field:
+        hug_width = 'required'
+        placeholder = 'Go to file/function'
+
+
+enamldef Main(MainWindow):
+    title = 'PyStudio'
+    initial_size = (1200, 600)
+    PyStudioStyleSheet:
+        pass
+    MainMenuBar:
+        pass
+    MainToolBar:
+        StyleSheet:
+            Style:
+                element = 'ToolBar'
+                Setter:
+                    field = 'border-bottom'
+                    value = '1px solid rgb(150, 150, 150)'
+    Container:
+        padding = 0
+        MyArea:
+            style = ''
