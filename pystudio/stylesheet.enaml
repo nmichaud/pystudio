@@ -61,10 +61,10 @@ enamldef PyStudioStyleSheet(StyleSheet):
             value = '5px'
         Setter:
             field = 'margin'
-            value = '1px 3px 3px 1px'
+            value = '1px'
 
     ItemStyle:
-        pseudo_element = 'tabbed'
+        pseudo_class = 'tabbed'
         Setter:
             field = 'border-top-left-radius'
             value = '0px'
@@ -282,4 +282,3 @@ enamldef PyStudioStyleSheet(StyleSheet):
         Setter:
             field = 'padding-bottom'
             value = '-4px'
-
