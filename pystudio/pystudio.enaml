@@ -204,16 +204,14 @@ enamldef FileToolBar(ToolBar):
         icon = MORE_ACTIONS_ICON
         popup_mode = 'instant'
         Menu:
-            title = '&File'
             Action:
-                text = 'New File\tCtrl+N'
-                triggered :: print 'New File triggered'
+                text = 'Copy...'
             Action:
-                text = 'Open File\tCtrl+O'
-                triggered :: print 'Open File triggered'
+                text = 'Move...'
             Action:
-                text = 'Open Folder...'
-                triggered :: print 'Open Folder triggered'
+                separator = True
+            Action:
+                text = 'Set as Working Directory'
 
 
 enamldef PackageToolBar(ToolBar):
